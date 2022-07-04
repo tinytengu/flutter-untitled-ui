@@ -1,0 +1,24 @@
+name: "GitHub Pages Web app deploy"
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.0.4"
+          channel: "stable"
+      - run: |
+          flutter build web --base-href /${{ github.event.repository.name }}/
+          git config --global user.email "tinytengu@yandex.ru"
+          git config --global user.name "tinytengu"
+          git --work-tree build add --all
+          git --work-tree build commit -m gh-pages
+          git push origin HEAD:gh-pages --force
+          rm -rf build
+          git checkout -f main
+          git branch -D gh-pages
