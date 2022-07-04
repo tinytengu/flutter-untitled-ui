@@ -16,6 +16,8 @@ jobs:
           flutter build web --base-href /${{ github.event.repository.name }}/
           git config --global user.email "tinytengu@yandex.ru"
           git config --global user.name "tinytengu"
-          git push origin :gh-pages && git subtree push --prefix dist origin gh-pages
+          git add build/web
+          git commit -m "Build `date +\"%Y-%m-%d %H:%M:%S\"`"
+          git push origin :gh-pages && git subtree push --prefix build/web origin gh-pages
           git subtree push --prefix build/web origin gh-pages
           rm -rf build
